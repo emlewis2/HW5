@@ -22,7 +22,8 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.HW5"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity"
+            android:usesCleartextTraffic="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,7 @@
 package lewis.libby.hw5
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
 import lewis.libby.hw5.ui.theme.HW5Theme
+import lewis.libby.hw5.AlienAlerter
 
 private val startHere = LatLng(38.9073, -77.0365)
 
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    Log.d("Starting:", "---------------------------------------")
                     val cameraPositionState = rememberCameraPositionState {
                         position = defaultCameraPosition
                     }
@@ -43,6 +46,14 @@ class MainActivity : ComponentActivity() {
                         cameraPositionState = cameraPositionState,
                         modifier = Modifier.fillMaxSize(),
                     )
+
+                    val scope = rememberCoroutineScope()
+
+                    val alienAlerter = AlienAlerter(scope)
+
+                    alienAlerter.startReporting()
+                    Log.d("What", "Oops")
+
                 }
             }
         }
