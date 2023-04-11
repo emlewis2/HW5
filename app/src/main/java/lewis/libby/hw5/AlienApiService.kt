@@ -17,8 +17,8 @@ interface AlienApiService {
 //    @GET("/aliens/5.json")
 //    Log.d("Path", )
 //    @GET("/johncodeos-blog/ParseJSONRetrofitConvertersExample/main/array.json")
-    @GET("/aliens/5.json")
-    suspend fun getAliens(): Response<List<UfoPosition>>
+    @GET("/aliens/{n}.json")
+    suspend fun getAliens(@Path("n") n: Int): Response<List<UfoPosition>>
 
 //    companion object {
 //        fun create() =
