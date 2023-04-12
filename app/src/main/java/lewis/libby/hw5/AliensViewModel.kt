@@ -16,7 +16,7 @@ class AliensViewModel: ViewModel() {
 
     private val _lines = MutableStateFlow(LinkedHashMap<Int, List<LatLng>>())
 
-    val lines = _lines
+    private val lines = _lines
 
     // Attempting to set a list of lines to draw based on _lines
     // Tried using linesToDraw = linesToDraw + tempList, but ran into nullable error

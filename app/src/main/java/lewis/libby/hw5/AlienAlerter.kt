@@ -25,15 +25,17 @@ class AlienAlerter(
 
     private val service = retrofit.create(AlienApiService::class.java)
 
+    // Variable to hold when to stop polling
     var stop = false
 
     fun startReporting() {
         scope.launch{
             var n = 1
             while(!stop) {
+                // Request
                 val response = service.getAliens(n)
-
                 withContext(Dispatchers.Main) {
+                    // If successful, add response to flow and increment n
                     if (response.isSuccessful) {
                         val items = response.body()
                         val alienAlert = AlienAlert(emptyList())
@@ -48,6 +50,7 @@ class AlienAlerter(
                             Log.e("RETROFIT_ERROR", response.code().toString())
                         }
                     } else {
+                        // If unsuccessful, stop polling
                         stop = true
                     }
                 }
