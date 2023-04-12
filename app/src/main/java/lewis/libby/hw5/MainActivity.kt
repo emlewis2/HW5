@@ -2,6 +2,7 @@ package lewis.libby.hw5
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,11 +25,12 @@ import kotlinx.coroutines.Dispatchers
 import lewis.libby.hw5.ui.theme.HW5Theme
 import lewis.libby.hw5.AlienAlerter
 
-private val startHere = LatLng(38.9073, -77.0365)
+//private val startHere = LatLng(38.9073, -77.0365)
 
-private val defaultCameraPosition = CameraPosition.fromLatLngZoom(startHere, 11f)
+//private val defaultCameraPosition = CameraPosition.fromLatLngZoom(startHere, 11f)
 
 class MainActivity : ComponentActivity() {
+    private val viewModel by viewModels<AliensViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,49 +41,24 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Log.d("Starting:", "---------------------------------------")
-                    val cameraPositionState = rememberCameraPositionState {
-                        position = defaultCameraPosition
-                    }
-
-                    GoogleMapDisplay(
-                        cameraPositionState = cameraPositionState,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-
-                    val scope = rememberCoroutineScope()
-
-                    val alienAlerter = AlienAlerter(scope)
-
-                    alienAlerter.startReporting()
-                    Log.d("What", "Oops")
-
+//                    val cameraPositionState = rememberCameraPositionState {
+//                        position = defaultCameraPosition
+//                    }
+//
+//                    GoogleMapDisplay(
+//                        cameraPositionState = cameraPositionState,
+//                        modifier = Modifier.fillMaxSize(),
+//                    )
+//
+//                    val scope = rememberCoroutineScope()
+//
+//                    val alienAlerter = AlienAlerter(scope)
+//
+//                    alienAlerter.startReporting()
+//                    Log.d("What", "Oops")
+                    Ui(viewModel)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun GoogleMapDisplay(
-    cameraPositionState: CameraPositionState,
-    modifier: Modifier
-) {
-
-//    LaunchedEffect(true) {
-//        val start =
-//            LatLng(38.9073, -77.0365)
-//        cameraPositionState.animate(
-//            CameraUpdateFactory.newLatLngZoom(
-//                start,
-//                16f
-//            ), 1000
-//        )
-//    }
-
-    GoogleMap(
-        cameraPositionState = cameraPositionState,
-        modifier = modifier,
-    ) {
-        // No content yet
     }
 }

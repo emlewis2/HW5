@@ -8,11 +8,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AlienAlerter(
-    private val scope: CoroutineScope,
+    val scope: CoroutineScope
 ) {
-    private val _alerts = MutableStateFlow(emptyList<AlienAlert>())
+    private val _alerts = MutableStateFlow(AlienAlert(emptyList()))
 
-    val alerts: Flow<List<AlienAlert>>
+    val alerts: Flow<AlienAlert>
         get() = _alerts
 
     private val retrofit = Retrofit.Builder()
@@ -39,6 +39,7 @@ class AlienAlerter(
                         val items = response.body()
                         val alienAlert = AlienAlert(emptyList())
 //                        Log.d("Response", items.toString())
+                        Log.d("Value", n.toString())
                         if (items != null) {
                             for (i in 0 until items.count()) {
 //                                val ship = items[i].ship
@@ -51,9 +52,8 @@ class AlienAlerter(
 //                                Log.d("Employee Salary: ", lon.toString())
 
                                 alienAlert.alertList = alienAlert.alertList + items[i]
-
                             }
-                            _alerts.value = _alerts.value + alienAlert
+                            _alerts.value = alienAlert
                             n += 1
                             delay(1000)
                         } else {
@@ -62,7 +62,7 @@ class AlienAlerter(
                     } else {
                         stop = true
 //                        Log.d("Stopped", "yes")
-                        Log.d("Total", _alerts.value.lastIndex.toString())
+                        Log.d("Total", _alerts.value.toString())
                     }
                 }
             }
