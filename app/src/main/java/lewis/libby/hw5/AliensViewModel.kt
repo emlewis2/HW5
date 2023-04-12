@@ -1,5 +1,7 @@
 package lewis.libby.hw5
 
+// Utilized Examples by Scott Stanchfield
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -30,30 +32,7 @@ class AliensViewModel: ViewModel() {
     // Using map to convert AlienAlert to a list of LatLng values to display in the Ui
     val currentAlert = alienAlerter.alerts.map { it.alertList.map { LatLng(it.lat, it.lon) } }
 
-//    val lines = alienAlerter.alerts.map { it.alertList.map {
-//        if (_lines.)
-//        LatLng(it.lat, it.lon) }
-//    }
-
-//    val lines = alienAlerter.alerts.map { it.alertList.map { _lines.value[it.ship] + LatLng(it.lat, it.lon) } }
-
-//    val lines = currentAlert
-
-//    val test2 = alienAlerter.alerts.map { it.alertList.map { LinkedHashMap<Int, List<LatLng>>() } }
-
-//    private val _lines = MutableStateFlow(LinkedHashMap<Int, List<LatLng>>())
-//
-//    val lines: Flow<LinkedHashMap<Int, List<LatLng>>>
-//        get() = _lines
-
-//    val lines = LinkedHashMap<Int, List<LatLng>>()
-
-//    fun setLines(index: Int, coordinate: LatLng) {
-//        if (lines.containsKey(index) {
-//            lines[index] = lines[index] + coordinate
-//        }
-//    }
-
+    // Creating dictionary of ship number to locations
     val lineSetter = alienAlerter.alerts.map {
         it.alertList.map {
             val index = it.ship
@@ -69,6 +48,7 @@ class AliensViewModel: ViewModel() {
         }
     }
 
+    // Function to start reporting
     fun startAlienReporting() {
         alienAlerter.startReporting()
     }

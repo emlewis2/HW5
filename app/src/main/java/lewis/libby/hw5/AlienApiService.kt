@@ -1,17 +1,10 @@
 package lewis.libby.hw5
 
-import android.util.Log
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+// Utilized Examples by Scott Stanchfield
 
-//const val BASE_URL = "http://javadude.com"
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface AlienApiService {
     @GET("/aliens/{n}.json")

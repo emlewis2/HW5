@@ -1,5 +1,8 @@
 package lewis.libby.hw5
 
+// Utilized Examples by Scott Stanchfield
+// As well as article found at: https://johncodeos.com/how-to-parse-json-with-retrofit-converters-using-kotlin/
+
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AlienAlerter(
-    val scope: CoroutineScope
+    private val scope: CoroutineScope
 ) {
     private val _alerts = MutableStateFlow(AlienAlert(emptyList()))
 
@@ -28,29 +31,14 @@ class AlienAlerter(
         scope.launch{
             var n = 1
             while(!stop) {
-//                Log.d("Value of n", n.toString())
-//                Log.d("Reporting", "yes")
                 val response = service.getAliens(n)
-//                Log.d("Finished report", "yes")
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-//                        Log.d("Success", "yes")
                         val items = response.body()
                         val alienAlert = AlienAlert(emptyList())
-//                        Log.d("Response", items.toString())
-                        Log.d("Value", n.toString())
                         if (items != null) {
                             for (i in 0 until items.count()) {
-//                                val ship = items[i].ship
-//                                Log.d("ID: ", ship.toString())
-//
-//                                val lat = items[i].lat
-//                                Log.d("Employee Name: ", lat.toString())
-//
-//                                val lon = items[i].lon
-//                                Log.d("Employee Salary: ", lon.toString())
-
                                 alienAlert.alertList = alienAlert.alertList + items[i]
                             }
                             _alerts.value = alienAlert
@@ -61,12 +49,9 @@ class AlienAlerter(
                         }
                     } else {
                         stop = true
-//                        Log.d("Stopped", "yes")
-                        Log.d("Total", _alerts.value.toString())
                     }
                 }
             }
-            Log.d("Outside", "yes")
         }
     }
 }

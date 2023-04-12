@@ -1,6 +1,7 @@
 package lewis.libby.hw5
 
-import android.util.Log
+// Utilized Examples by Scott Stanchfield
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,11 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.*
-import com.google.maps.android.ktx.model.polylineOptions
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun Ui(
@@ -25,14 +23,11 @@ fun Ui(
 
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(startHere, 11f)
 
-//    var mapLoaded by remember { mutableStateOf(false) }
-
     val ufos = viewModel.currentAlert.collectAsState(initial = emptyList())
 
-    val lines = viewModel.lines.collectAsState()
+    // Attempted line implementation in Ui as well
 
-//    val onDrawLines = viewModel.setLines()
-
+//    val lines = viewModel.lines.collectAsState()
 
 //    var linesToDraw: List<List<LatLng>> = mutableListOf()
 //
@@ -47,17 +42,9 @@ fun Ui(
         bounds = bounds.including(it)
     }
 
-//    val lines = viewModel.lines
-
     val cameraPositionState = rememberCameraPositionState {
         position = defaultCameraPosition
     }
-
-//    var ufoCoordinates = LatLng(38.9073, -77.0365)
-
-//    if (ufos.value.isNotEmpty()) {
-//        ufoCoordinates = LatLng(ufos.value[0].lat, ufos.value[0].lon)
-//    }
 
     GoogleMapDisplay(
         bounds = bounds,
@@ -65,17 +52,10 @@ fun Ui(
         ufos = ufos.value,
         onMapLoaded = {
             viewModel.startAlienReporting()
-            Log.d("Loaded", "ahhh")
         },
         cameraPositionState = cameraPositionState,
         modifier = Modifier.fillMaxSize(),
     )
-
-    Log.d("Ufos", ufos.value.toString())
-
-//    Log.d("Lines", lines.values.toString())
-
-//    Log.d("ufos", "idk man")
 }
 
 @Composable
@@ -92,16 +72,10 @@ fun GoogleMapDisplay(
 
         val context = LocalContext.current
 
-//        var bounds = LatLngBounds(startHere, startHere)
-
-//        ufos.forEach {
-//            bounds = bounds.including(it)
-//        }
-
+        // Attempting to set lines via function in viewModel
         val lines = onSetLines()
 
-        Log.d("Lines", lines.toString())
-
+        // Changing camera position to include new bounds with new UFO sightings
         LaunchedEffect(ufos) {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLngBounds(
@@ -111,20 +85,16 @@ fun GoogleMapDisplay(
             )
         }
 
-//        var ufoIcon by remember { mutableStateOf<BitmapDescriptor?>(null) }
-
-        //    ufoIcon = context.loadBitmapDescriptor(
-        //        R.drawable.ic_ufo_flying
-        //    )
-
         GoogleMap(
             cameraPositionState = cameraPositionState,
             onMapLoaded = onMapLoaded,
             modifier = modifier,
         ) {
+            // Attempting to draw lines based on each list of LatLng positions for each ship
             lines.forEach{
                 Polyline(points = it)
             }
+            // Marking each current UFO position
             ufos.forEach {
                 Marker(
                     state = MarkerState(it),
@@ -132,24 +102,7 @@ fun GoogleMapDisplay(
                         R.drawable.ic_ufo_flying
                     )
                 )
-//                bounds = bounds.including(it)
-                Log.d("Bounds", bounds.toString())
             }
-//            LaunchedEffect(true) {
-//                cameraPositionState.animate(
-//                    CameraUpdateFactory.newLatLngBounds(
-//                        bounds,
-//                        boundsPadding.toInt()
-//                    ), 200
-//                )
-//            }
-            //        Marker(
-            //            state = MarkerState()
-            //        )
-            //        MarkerInfoWindowContent(
-            //            state = placeState,
-            //            title = "Ufo",
-            //        )
         }
     }
 }
